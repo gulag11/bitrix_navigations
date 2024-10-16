@@ -24,9 +24,6 @@
 // NavFirstRecordShow порядковый номер первой статьи на текущей странице
 // NavLastRecordShow порядковый номер последней статьи на текущей странице
 
-use Bitrix\Main\Web\Uri;
-use Bitrix\Main\Application;
-
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     exit;
 }
@@ -40,8 +37,8 @@ if (!$arResult["NavShowAlways"]) {
 	}
 }
 
-$arResult['sUrlPath'] = str_replace('/page-' . $arResult['NavPageNomer'], '', $arResult['sUrlPath']);
-$arResult['sUrlPathParams'] = str_replace('/page-' . $arResult['NavPageNomer'], '', $arResult['sUrlPathParams']);
+$arResult['sUrlPath'] = str_replace('/page-' . $arResult['NavPageNomer'] . '/', '', $arResult['sUrlPath']);
+$arResult['sUrlPathParams'] = str_replace('/page-' . $arResult['NavPageNomer'] . '/', '', $arResult['sUrlPathParams']);
 
 $arResult['reduct'] = [
     'begin_page' => [
@@ -50,7 +47,7 @@ $arResult['reduct'] = [
     ],
     'prev_page' => [
         'conditions' => $arResult['NavPageNomer'] > 2,
-        'link_1' => $arResult['sUrlPath'] . 'page-' . ($arResult["NavPageNomer"] - 1) . '/' . $strNavQueryStringFull,
+        'link_1' => $arResult['sUrlPath'] . '/page-' . ($arResult["NavPageNomer"] - 1) . '/' . $strNavQueryStringFull,
         'link_2' => $arResult["sUrlPath"] . $strNavQueryStringFull
     ],
     'dots' => [
@@ -62,7 +59,7 @@ $arResult['reduct'] = [
             ],
             'links' => [
                 $arResult["sUrlPath"] . $strNavQueryStringFull,
-                $arResult['sUrlPath'] . 'page-' . (round($arResult["nStartPage"] / 2)) . '/' . $strNavQueryStringFull
+                $arResult['sUrlPath'] . '/page-' . (round($arResult["nStartPage"] / 2)) . '/' . $strNavQueryStringFull
             ]
         ],
         'second' => [
@@ -72,8 +69,8 @@ $arResult['reduct'] = [
                 $arResult["nEndPage"] < ($arResult["NavPageCount"] - 1)
             ],
             'links' => [
-                $arResult['sUrlPath'] . 'page-' . (round($arResult["nEndPage"] + ($arResult["NavPageCount"] - $arResult["nEndPage"]) / 2)) . '/' . $strNavQueryStringFull,
-                $arResult['sUrlPath'] . 'page-' . $arResult["NavPageCount"] . '/' . $strNavQueryStringFull,
+                $arResult['sUrlPath'] . '/page-' . (round($arResult["nEndPage"] + ($arResult["NavPageCount"] - $arResult["nEndPage"]) / 2)) . '/' . $strNavQueryStringFull,
+                $arResult['sUrlPath'] . '/page-' . $arResult["NavPageCount"] . '/' . $strNavQueryStringFull,
             ]
         ]
     ],
@@ -84,17 +81,16 @@ $arResult['reduct'] = [
         ],
         'links' => [
             $arResult["sUrlPath"] . $strNavQueryStringFull,
-            // $arResult["sUrlPath"] . '?' . $strNavQueryString . 'page' . '=',
-            $arResult['sUrlPath'] . 'page-',
+            $arResult['sUrlPath'] . '/page-',
             $strNavQueryStringFull
         ]
     ],
     'end_page' => [
         'conditions' => $arResult["NavPageNomer"] < $arResult["NavPageCount"],
-        'link_next' => $arResult['sUrlPath'] . 'page-' . ($arResult["NavPageNomer"] + 1) . '/' . $strNavQueryStringFull,
-        'link_end' => $arResult['sUrlPath'] . 'page-' . $arResult["NavPageCount"] . '/' . $strNavQueryStringFull
+        'link_next' => $arResult['sUrlPath'] . '/page-' . ($arResult["NavPageNomer"] + 1) . '/' . $strNavQueryStringFull,
+        'link_end' => $arResult['sUrlPath'] . '/page-' . $arResult["NavPageCount"] . '/' . $strNavQueryStringFull
     ],
     'show_more' => [
-        'link' => $arResult['sUrlPath'] . 'page-' . ($arResult["NavPageNomer"] + 1) . '/' . $strNavQueryStringFull
+        'link' => $arResult['sUrlPath'] . '/page-' . ($arResult["NavPageNomer"] + 1) . '/' . $strNavQueryStringFull
     ],
 ];
