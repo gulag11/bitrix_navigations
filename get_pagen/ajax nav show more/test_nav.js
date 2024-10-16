@@ -8,7 +8,8 @@ function show_more_fetch () {
     if (btn) {
         btn.addEventListener('click', () => {
             let parent = btn.closest('[js-elems-box]'),
-                nav = btn.closest('[js-nav-box]');
+                nav = btn.closest('[js-nav-box]'),
+                url = btn.getAttribute('js-show-more');
             // 'X-Requested-With' : 'XMLHttpRequest' заголовок для отслеживания ajax
             let queryParam = {
                 headers: {
@@ -18,12 +19,13 @@ function show_more_fetch () {
                 method: 'GET',
             };
 
-            fetch(btn.getAttribute('js-show-more'), queryParam)
+            fetch(url, queryParam)
                 .then(response => {return response.text()})
                 .then(html => {
                     html = document.createRange().createContextualFragment(html).querySelector('[js-elems-box]');
                     nav.remove();
                     parent.innerHTML += html.innerHTML;
+                    history.pushState(null, null, window.location.origin + url);
                     // вызываем эту же функцию для новой кнопки которую мы заменили
                     show_more_fetch();
                 })
@@ -43,9 +45,10 @@ function show_more_BX () {
     if (btn) {
         BX.bind(btn, 'click', function (e) {
             let parent = btn.closest('[js-elems-box]'),
-                nav = btn.closest('[js-nav-box]');
+                nav = btn.closest('[js-nav-box]'),
+                url = btn.getAttribute('js-show-more');
             BX.ajax({
-                url: btn.getAttribute('js-show-more'), 
+                url: url, 
                 method: 'GET',
                 processData: false, 
                 preparePost: false, 
@@ -53,6 +56,7 @@ function show_more_BX () {
                     html = document.createRange().createContextualFragment(html).querySelector('[js-elems-box]');
                     nav.remove();
                     parent.innerHTML += html.innerHTML;
+                    history.pushState(null, null, window.location.origin + url);
                     // вызываем эту же функцию для новой кнопки которую мы заменили
                     show_more_BX();
                 },

@@ -45,10 +45,9 @@ function show_more_BX () {
     if (btn) {
         BX.bind(btn, 'click', function (e) {
             let parent = btn.closest('[js-elems-box]'),
-                nav = btn.closest('[js-nav-box]'),
-                url = btn.getAttribute('js-show-more');
+                nav = btn.closest('[js-nav-box]');
             BX.ajax({
-                url: url, 
+                url: btn.getAttribute('js-show-more'), 
                 method: 'GET',
                 processData: false, 
                 preparePost: false, 
@@ -56,7 +55,6 @@ function show_more_BX () {
                     html = document.createRange().createContextualFragment(html).querySelector('[js-elems-box]');
                     nav.remove();
                     parent.innerHTML += html.innerHTML;
-                    history.pushState(null, null, window.location.origin + url);
                     // вызываем эту же функцию для новой кнопки которую мы заменили
                     show_more_BX();
                 },
